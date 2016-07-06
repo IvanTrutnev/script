@@ -1,7 +1,7 @@
 (function(angular){
     "use strict";
 
-    angular.module('mathApp', ['ngMaterial', 'md.data.table', 'chart.js']);
+    angular.module('mathApp', ['ngMaterial', 'md.data.table', 'chart.js', 'ngMdIcons']);
 
     MathJax.Hub.Config({
         skipStartupTypeset: true,

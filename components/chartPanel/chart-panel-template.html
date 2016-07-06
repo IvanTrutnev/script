@@ -1,11 +1,23 @@
-<chart-constructor list-of-variables="ctrl.listOfVariables"
-                   variables="ctrl.variables"
-                   on-configure-chart="ctrl.onConfigureChart(xAxisVariable, multiPlotVariable, selectedRestVariables,multiPlotVariableValues)">
+<md-button class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
+    <md-icon>
+        <ng-md-icon icon="{{ ctrl.showPanel ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}"></ng-md-icon>
+    </md-icon>
+</md-button>
 
-</chart-constructor>
+<div ng-show="ctrl.showPanel">
+    <chart-constructor list-of-variables="ctrl.listOfVariables"
+                       variables="ctrl.variables"
+                       on-configure-chart="ctrl.onConfigureChart(xAxisVariable, multiPlotVariable, selectedRestVariables,multiPlotVariableValues)">
 
-<my-chart formula="ctrl.formula" variables="ctrl.variables" x-axis-variable="ctrl.xAxisVariable"
-          multi-plot-variable="ctrl.multiPlotVariable" selected-rest-variables="ctrl.selectedRestVariables"
-          multi-plot-variable-values="ctrl.multiPlotVariableValues">
+    </chart-constructor>
 
-</my-chart>
+    <my-chart formula="ctrl.formula" variables="ctrl.variables" x-axis-variable="ctrl.xAxisVariable"
+              multi-plot-variable="ctrl.multiPlotVariable" selected-rest-variables="ctrl.selectedRestVariables"
+              multi-plot-variable-values="ctrl.multiPlotVariableValues">
+
+    </my-chart>
+</div>
+
+<div ng-hide="ctrl.showPanel" layout="row" layout-align="center center">
+    <h4>Chart panel</h4>
+</div>

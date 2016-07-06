@@ -25,6 +25,7 @@
             ctrl.selectedRestVariables = selectedRestVariables;
             ctrl.multiPlotVariableValues = multiPlotVariableValues;
 
+            ctrl.showPanel = false;
 
             console.info('pre draw');
             console.info(ctrl.variables);
