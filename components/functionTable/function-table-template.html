@@ -1,0 +1,20 @@
+<table
+        md-table
+        md-row-select="options.rowSelection"
+        ng-model="selected"
+        md-progress="ctrl.promise">
+
+    <thead md-head md-order="query.order" >
+        <tr md-row>
+            <th md-column ng-repeat="variable in ctrl.listOfVariables" md-order-by="{{variable}}"><span>{{variable}}</span></th>
+            <th md-column md-order-by="f"><span>f</span></th>
+        </tr>
+    </thead>
+
+    <tbody md-body>
+        <tr md-row ng-repeat="answer in ctrl.answers | filter: filter.search | orderBy: query.order">
+            <td md-cell ng-repeat="value in answer">{{value | number:3}}</td>
+        </tr>
+    </tbody>
+
+</table>

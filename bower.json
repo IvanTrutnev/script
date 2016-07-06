@@ -1,0 +1,14 @@
+{
+  "name": "mathApp",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "~1.5",
+    "angular-material": "~1",
+    "angular-material-data-table": "~0.10",
+    "angular-material-icons": "~0.7",
+    "MathJax": "~2.5",
+    "mathjs": "~3.2",
+    "angular-chart.js": "~1.0"
+  },
+  "private": true
+}

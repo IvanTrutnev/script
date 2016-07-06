@@ -1,0 +1,30 @@
+<formula-input on-set-formula="ctrl.onSetFormula(formula, variables)"
+               layout="column"
+               layout-padding
+               class="md-whiteframe-1dp">
+</formula-input>
+
+<variables-input list-of-variables="ctrl.listOfVariables"
+                 on-set-variables="ctrl.onSetVariables(variables)"
+                 ng-show="ctrl.listOfVariables !== null"
+                 layout="column"
+                 layout-padding
+                 class="md-whiteframe-1dp">
+</variables-input>
+
+<function-table list-of-variables="ctrl.listOfVariables"
+                answers="ctrl.answers"
+                ng-hide="ctrl.answers === null"
+                layout="column"
+                layout-padding
+                class="md-whiteframe-1dp">
+</function-table>
+
+<chart-panel list-of-variables="ctrl.listOfVariables"
+             variables="ctrl.variables"
+             formula="ctrl.formula"
+             ng-hide="ctrl.answers === null"
+             layout="column"
+             layout-padding
+             class="md-whiteframe-1dp">
+</chart-panel>

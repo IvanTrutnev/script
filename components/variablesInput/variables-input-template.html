@@ -1,0 +1,10 @@
+<div ng-repeat="variable in ctrl.listOfVariables">
+    {{variable}}
+    <md-chips ng-model="ctrl.variables[variable]" >
+        <input type="number" placeholder="Add">
+    </md-chips>
+</div>
+<div layout="row" layout-align="center center">
+    <md-button ng-click="ctrl.resetVariables()">reset variables</md-button>
+    <md-button ng-click="ctrl.setVariables()">set variables</md-button>
+</div>
