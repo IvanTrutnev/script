@@ -17,6 +17,7 @@
         ctrl.$onInit = onInit;
 
         function onInit() {
+            ctrl.showPanel = false;
         }
     }
 

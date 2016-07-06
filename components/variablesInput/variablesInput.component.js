@@ -48,6 +48,7 @@
         }
 
         function onInit() {
+            ctrl.showTable = false;
             ctrl.listOfVariables = [];
             ctrl.variables = {};
         }

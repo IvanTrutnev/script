@@ -1,20 +1,44 @@
-<table
-        md-table
-        md-row-select="options.rowSelection"
-        ng-model="selected"
-        md-progress="ctrl.promise">
+<md-button class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
+    <md-icon>
+        <ng-md-icon icon="{{ ctrl.showPanel ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}"></ng-md-icon>
+    </md-icon>
+</md-button>
 
-    <thead md-head md-order="query.order" >
+<div ng-show="ctrl.showPanel">
+    <table md-table
+           md-row-select="options.rowSelection"
+           ng-model="selected"
+           md-progress="ctrl.promise">
+
+        <thead md-head md-order="query.order" >
         <tr md-row>
-            <th md-column ng-repeat="variable in ctrl.listOfVariables" md-order-by="{{variable}}"><span>{{variable}}</span></th>
-            <th md-column md-order-by="f"><span>f</span></th>
-        </tr>
-    </thead>
+            <th md-column
+                ng-repeat="variable in ctrl.listOfVariables"
+                md-order-by="{{variable}}">
 
-    <tbody md-body>
-        <tr md-row ng-repeat="answer in ctrl.answers | filter: filter.search | orderBy: query.order">
-            <td md-cell ng-repeat="value in answer">{{value | number:3}}</td>
+                <span>{{variable}}</span>
+            </th>
+            <th md-column md-order-by="f">
+                <span>f</span>
+            </th>
         </tr>
-    </tbody>
+        </thead>
 
-</table>
+        <tbody md-body>
+        <tr md-row
+            ng-repeat="answer in ctrl.answers | filter: filter.search | orderBy: query.order">
+
+            <td md-cell ng-repeat="value in answer">
+                {{value | number:3}}
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div ng-hide="ctrl.showPanel" layout="row" layout-align="center center">
+    <h4>Table panel</h4>
+</div>
+
+
