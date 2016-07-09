@@ -15,25 +15,18 @@
             }
         });
 
-    function MyChartController($rootScope){
+    function MyChartController($rootScope, notifyService){
         let ctrl = this;
 
         ctrl.$onInit = onInit;
 
         $rootScope.$on('drawChart', (event, data) => {
-            console.info('draw');
-            console.log(data);
             ctrl.formula = data.formula;
             ctrl.variables = data.variables;
             ctrl.xAxisVariable = data.xAxisVariable;
             ctrl.multiPlotVariable = data.multiPlotVariable;
             ctrl.selectedRestVariables = data.selectedRestVariables;
             ctrl.multiPlotVariableValues = data.multiPlotVariableValues;
-            console.info(ctrl.variables);
-            console.info(ctrl.xAxisVariable);
-            console.info(ctrl.multiPlotVariable);
-            console.info(ctrl.selectedRestVariables);
-            console.info(ctrl.multiPlotVariableValues);
 
             let minValue = parseFloat(ctrl.variables[ctrl.xAxisVariable][0]);
             let maxValue = parseFloat(ctrl.variables[ctrl.xAxisVariable][ctrl.variables[ctrl.xAxisVariable].length - 1]);
@@ -43,31 +36,17 @@
             }
             chartLabels.push(maxValue);
 
-            let chartData = [];
-            let chartSeries = [];
-            for (let i = 0; i < ctrl.multiPlotVariableValues.length; i++) {
-                chartData.push([]);
-                let value = ctrl.multiPlotVariableValues[i];
-                chartSeries.push(ctrl.multiPlotVariable + ' = ' + parseFloat(value).toFixed(2));
-
-                console.error('!!!!!');
-                let functionScope = {};
-                for (let variable in ctrl.selectedRestVariables) {
-                    functionScope[variable] = ctrl.selectedRestVariables[variable];
-                    console.info(functionScope);
-                }
-                functionScope[ctrl.multiPlotVariable] = value;
-                for (let xAxisValue in chartLabels) {
-                    functionScope[ctrl.xAxisVariable] = xAxisValue;
-                    console.info(functionScope);
-                    chartData[i].push(ctrl.formula.eval(functionScope));
-                }
-            }
+            let {chartData, chartSeries} = calculateChartPoints(ctrl.formula, ctrl.multiPlotVariableValues, ctrl.multiPlotVariable, chartLabels, ctrl.selectedRestVariables, ctrl.xAxisVariable);
 
             ctrl.chartLabels = chartLabels;
             ctrl.chartData = chartData;
             ctrl.chartSeries = chartSeries;
             ctrl.showChart = true;
+
+        });
+
+        function onInit() {
+            ctrl.showChart = false;
             ctrl.chartOptions = {
                 scales: {
                     yAxes: [
@@ -81,16 +60,45 @@
                 }
             };
             ctrl.dataSetOverride =  [{ yAxisID: 'y-axis-1' }];
+        }
 
-            console.error('!!!!!!');
-            console.info(ctrl.chartLabels);
-            console.info(ctrl.chartData);
-            console.info(ctrl.chartSeries);
-            console.error('!!!!!!');
-        });
+        function calculateChartPoints(formula, multiPlotVariableValues, multiPlotVariable, chartLabels, selectedRestVariables, xAxisVariable) {
+            let chartData = [];
+            let chartSeries = [];
+            let isError = false;
 
-        function onInit() {
-            ctrl.showChart = false;
+            for (let i = 0; i < multiPlotVariableValues.length; i++) {
+                chartData.push([]);
+                let value = multiPlotVariableValues[i];
+                chartSeries.push(multiPlotVariable + ' = ' + parseFloat(value).toFixed(2));
+
+                let functionScope = {};
+                for (let variable in selectedRestVariables) {
+                    functionScope[variable] = selectedRestVariables[variable];
+                }
+                functionScope[multiPlotVariable] = value;
+                for (let xAxisValue of chartLabels) {
+                    let formulaValue = null;
+                    functionScope[xAxisVariable] = xAxisValue;
+                    try {
+                        formulaValue = formula.eval(functionScope);
+                        chartData[i].push(formulaValue);
+                    }
+                    catch (e) {
+                        console.log(e);
+                        isError = true;
+                        break;
+                    }
+                }
+                if (isError) {
+                    notifyService.notify('Opps, chart have some infinite values');
+                    chartData = null;
+                    chartSeries = null;
+                    break;
+                }
+            }
+
+            return {chartData, chartSeries};
         }
     }
 
