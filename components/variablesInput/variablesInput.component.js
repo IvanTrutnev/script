@@ -51,18 +51,20 @@
                 notifyService.variableHasNoValuesNotify(emptyVariables);
             }
             else {
-
+                ctrl.showPanel = false;
                 ctrl.onSetVariables({variables: ctrl.variables});
             }
         }
 
         function resetVariables() {
-            ctrl.variables = {};
+            for (let variable in ctrl.variables) {
+                ctrl.variables[variable] = [];
+            }
             ctrl.onSetVariables({variables: null});
         }
 
         function onInit() {
-            ctrl.showTable = false;
+            ctrl.showPanel = true;
             ctrl.listOfVariables = [];
             ctrl.variables = {};
         }
