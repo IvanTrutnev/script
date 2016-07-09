@@ -11,7 +11,7 @@
             }
         });
 
-    function variablesInputController($scope){
+    function variablesInputController($scope, notifyService){
         let ctrl = this;
 
         $scope.$watch(() => ctrl.listOfVariables, listOfVariablesWatcher);
@@ -21,17 +21,40 @@
         ctrl.resetVariables =  resetVariables;
 
         function setVariables() {
+            let isError = false;
+            let emptyVariables = [];
+
             for(let variable in ctrl.variables) {
-                ctrl.variables[variable].sort((a, b) => {
-                    a = Number(a);
-                    b = Number(b);
+                let values = ctrl.variables[variable];
+
+                if (values.length === 0) {
+                    isError = true;
+                    emptyVariables.push(variable);
+                    continue;
+                }
+                else {
+                    //parse and replace all values from string to float
+                    let parsedValues = [];
+                    for (let value of values) {
+                        parsedValues.push(parseFloat(value));
+                    }
+                    ctrl.variables[variable] = parsedValues;
+                }
+
+                values.sort((a, b) => {
                     if (a < b) return -1;
                     if (a > b) return 1;
                     if (a === b) return 0;
                 });
             }
 
-            ctrl.onSetVariables({variables: ctrl.variables});
+            if (isError) {
+                notifyService.variableHasNoValuesNotify(emptyVariables);
+            }
+            else {
+
+                ctrl.onSetVariables({variables: ctrl.variables});
+            }
         }
 
         function resetVariables() {
@@ -58,7 +81,6 @@
                     let diff = function(firstArray, secondArray) {
                         return firstArray.filter(value => secondArray.indexOf(value) < 0);
                     };
-
 
                     let deletedVariables = diff(oldValue, newValue);
 
