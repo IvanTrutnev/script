@@ -14,15 +14,7 @@
     function variablesInputController($scope){
         let ctrl = this;
 
-        $scope.$watch(() => ctrl.listOfVariables, () =>  {
-            console.info(ctrl.listOfVariables);
-            if (ctrl.listOfVariables !== null) {
-                for(let variable of ctrl.listOfVariables) {
-                    ctrl.variables[variable] = [];
-                }
-                console.log(ctrl.variables);
-            }
-        });
+        $scope.$watch(() => ctrl.listOfVariables, listOfVariablesWatcher);
 
         ctrl.$onInit = onInit;
         ctrl.setVariables = setVariables;
@@ -51,6 +43,30 @@
             ctrl.showTable = false;
             ctrl.listOfVariables = [];
             ctrl.variables = {};
+        }
+
+        function listOfVariablesWatcher(newValue, oldValue) {
+            if (newValue !== null) {
+                for(let variable of newValue) {
+                    if (!(variable in ctrl.variables)) {
+                        ctrl.variables[variable] = [];
+                    }
+                }
+
+                if (oldValue !== null) {
+
+                    let diff = function(firstArray, secondArray) {
+                        return firstArray.filter(value => secondArray.indexOf(value) < 0);
+                    };
+
+
+                    let deletedVariables = diff(oldValue, newValue);
+
+                    for (let deletedVariable of deletedVariables) {
+                        delete ctrl.variables[deletedVariable];
+                    }
+                }
+            }
         }
     }
 
