@@ -88,9 +88,9 @@
             console.info(ctrl.chartSeries);
             console.error('!!!!!!');
         });
-        ctrl.showChart = false;
 
         function onInit() {
+            ctrl.showChart = false;
         }
     }
 
