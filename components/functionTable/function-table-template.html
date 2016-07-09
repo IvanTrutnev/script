@@ -5,36 +5,43 @@
 </md-button>
 
 <div ng-show="ctrl.showPanel">
-    <table md-table
-           md-row-select="options.rowSelection"
-           ng-model="selected"
-           md-progress="ctrl.promise">
+    <md-table-container>
+        <table md-table
+               md-row-select="options.rowSelection"
+               ng-model="selected"
+               md-progress="ctrl.promise">
 
-        <thead md-head md-order="query.order" >
-        <tr md-row>
-            <th md-column
-                ng-repeat="variable in ctrl.listOfVariables"
-                md-order-by="{{variable}}">
+            <thead md-head md-order="query.order" >
+            <tr md-row>
+                <th md-column
+                    ng-repeat="variable in ctrl.listOfVariables"
+                    md-order-by="{{variable}}">
 
-                <span>{{variable}}</span>
-            </th>
-            <th md-column md-order-by="f">
-                <span>f</span>
-            </th>
-        </tr>
-        </thead>
+                    <span>{{variable}}</span>
+                </th>
+                <th md-column md-order-by="f">
+                    <span>f</span>
+                </th>
+            </tr>
+            </thead>
 
-        <tbody md-body>
-        <tr md-row
-            ng-repeat="answer in ctrl.answers | filter: filter.search | orderBy: query.order">
+            <tbody md-body>
+            <tr md-row
+                ng-repeat="answer in ctrl.answers | orderBy: ctrl.order | limitTo: ctrl.pageLimit : (ctrl.page - 1) * ctrl.pageLimit">
 
-            <td md-cell ng-repeat="value in answer">
-                {{value | number:3}}
-            </td>
-        </tr>
-        </tbody>
+                <td md-cell ng-repeat="value in answer">
+                    {{value | number:3}}
+                </td>
+            </tr>
+            </tbody>
 
-    </table>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="ctrl.pageLimit" md-limit-options="ctrl.pageLimitOption"
+                         md-page="ctrl.page" md-total="{{ ctrl.answers.length }}"
+                         md-page-select="ctrl.options.pageSelect">
+
+    </md-table-pagination>
 </div>
 
 <div ng-hide="ctrl.showPanel" layout="row" layout-align="center center">
