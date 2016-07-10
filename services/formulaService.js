@@ -1,14 +1,15 @@
-(function(angular){
+(function (angular) {
     "use strict";
 
     angular.module('mathApp')
         .service('formulaService', FormulaService);
 
-    function FormulaService(){
+    function FormulaService() {
         let service = this;
 
         service.parseRawFormula = parseRawFormula;
-        service.executeFormula = executeFormula;
+        service.executeFormulaForTable = executeFormulaForTable;
+        service.executeFormulaForChart = executeFormulaForChart;
 
         const ALLOWED_MATH_FUNCTIONS_AND_CONST = ['sin', 'cos', 'log', 'e', 'pi'];
 
@@ -17,15 +18,41 @@
             let parsedFormula = math.parse(rawFormula);
             let formulaText = parsedFormula.toTex();
             let isFormulaValid = checkFunctionValid(parsedFormula, variables);
-            return (isFormulaValid.error === null) ?{variables, parsedFormula, formulaText} : {error: isFormulaValid.error};
+
+            return (isFormulaValid.error === null) ? {
+                variables,
+                parsedFormula,
+                formulaText
+            } : {error: isFormulaValid.error};
         }
 
-        function executeFormula(compiledFormula, formulaArgs) {
-            for(let args of formulaArgs) {
+        function executeFormulaForTable(compiledFormula, formulaArgs) {
+            for (let args of formulaArgs) {
                 args['f'] = compiledFormula.eval(args);
             }
             return formulaArgs;
         }
+
+        function executeFormulaForChart(compiledFormula, formulaArgsRows) {
+            let chartData = [];
+
+            for (let i = 0; i <  formulaArgsRows.length; i++) {
+                let formulaArgsRow = formulaArgsRows[i];
+                chartData.push([]);
+                for (let formulaArgs of formulaArgsRow) {
+                    try {
+                        chartData[i].push(compiledFormula.eval(formulaArgs));
+                    }
+                    catch (e) {
+                        return {error: 'Opps, chart have some infinite values'};
+                    }
+                }
+            }
+
+            return chartData;
+        }
+
+
 
         function findVariables(rawFormula) {
             let variables = rawFormula.match(/([a-zA-Z])+/g);
@@ -54,7 +81,7 @@
             try {
                 parsedFormula.eval(variablesValue);
             }
-            catch (e){
+            catch (e) {
                 return {error: 'Formula is invalid!'};
             }
             return {error: null};

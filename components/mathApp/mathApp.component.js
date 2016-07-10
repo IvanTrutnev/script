@@ -28,7 +28,7 @@
 
             if (variables !== null) {
                 ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variables);
-                ctrl.answers = formulaService.executeFormula(ctrl.formula, ctrl.functionArgs);
+                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
             }
             else {
                 ctrl.functionArgs = [];
