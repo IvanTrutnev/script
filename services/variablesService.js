@@ -9,6 +9,7 @@
         service.processVariableValues = processVariableValues;
         service.resetVariableValues = resetVariableValues;
         service.checkListOfVariablesChanges = checkListOfVariablesChanges;
+        service.getFunctionArgs = getFunctionArgs;
 
         function processVariableValues(variablesValues) {
             let isError = false;
@@ -55,6 +56,36 @@
             }
 
             return variablesValues;
+        }
+
+        function getFunctionArgs(variablesValues) {
+            let functionArgs = [];
+            let variations = 1;
+            angular.forEach(variablesValues, (value, key) => {
+                variations *= value.length;
+            });
+            for(let i = 0; i < variations; i++) {
+                functionArgs.push({});
+                angular.forEach(variablesValues, (value, key) => {
+                    functionArgs[i][key] = 0;
+                });
+            }
+            let loop = variations;
+            angular.forEach(variablesValues, (values, key) => {
+                loop /= values.length;
+                let index = 0;
+                for(let j = 0; j<(variations/values.length)/loop; j++) {
+                    for (let value of values) {
+                        for (let i = 0; i < loop; i++) {
+                            functionArgs[index][key] = value;
+                            index++;
+                        }
+                    }
+                }
+            });
+
+            return functionArgs;
+
         }
 
         function parseVariableValues(variableValues) {

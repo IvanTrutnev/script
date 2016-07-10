@@ -8,6 +8,7 @@
         let service = this;
 
         service.parseRawFormula = parseRawFormula;
+        service.executeFormula = executeFormula;
 
         const ALLOWED_MATH_FUNCTIONS_AND_CONST = ['sin', 'cos', 'log', 'e', 'pi'];
 
@@ -16,7 +17,14 @@
             let parsedFormula = math.parse(rawFormula);
             let formulaText = parsedFormula.toTex();
             let isFormulaValid = checkFunctionValid(parsedFormula, variables);
-            return ('error' in isFormulaValid) ? {error: isFormulaValid.error} : {variables, parsedFormula, formulaText};
+            return (isFormulaValid.error === null) ?{variables, parsedFormula, formulaText} : {error: isFormulaValid.error};
+        }
+
+        function executeFormula(compiledFormula, formulaArgs) {
+            for(let args of formulaArgs) {
+                args['f'] = compiledFormula.eval(args);
+            }
+            return formulaArgs;
         }
 
         function findVariables(rawFormula) {

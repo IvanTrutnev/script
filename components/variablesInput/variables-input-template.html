@@ -5,7 +5,7 @@
 </md-button>
 
 <div ng-show="ctrl.showPanel">
-    <div ng-repeat="variable in ctrl.listOfVariables">
+    <div ng-repeat="variable in ctrl.listOfVariables track by $index">
         {{variable}}
         <md-chips ng-model="ctrl.variables[variable]" >
             <input type="number" placeholder="Add">
