@@ -16,8 +16,6 @@
     <h4>Chart constructor</h4>
 </div>
 
-<my-chart ng-show="ctrl.showPanel" formula="ctrl.formula" variables="ctrl.variables" x-axis-variable="ctrl.xAxisVariable"
-          multi-plot-variable="ctrl.multiPlotVariable" selected-rest-variables="ctrl.selectedRestVariables"
-          multi-plot-variable-values="ctrl.multiPlotVariableValues">
+<my-chart ng-show="ctrl.showPanel && ctrl.showChart" chart-labels="ctrl.chartLabels" chart-data="ctrl.chartData" chart-series="ctrl.chartSeries">
 
 </my-chart>

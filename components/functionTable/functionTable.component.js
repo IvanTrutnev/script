@@ -16,21 +16,23 @@
 
         ctrl.$onInit = onInit;
 
-        $scope.$watch(() => ctrl.answers, (newVal, oldVal) => {
-            if (newVal !== null) {
-                ctrl.pageLimitOption = [5];
-                for (let i = 1; i < (newVal.length/10).toFixed(0); i++) {
-                    ctrl.pageLimitOption.push(i*10);
-                }
-                ctrl.pageLimitOption.push(newVal.length);
-            }
-        });
+        $scope.$watch(() => ctrl.answers, setPageLimitOptions);
 
         function onInit() {
             ctrl.showPanel = false;
             ctrl.pageLimit = 10;
             ctrl.pageLimitOption = [];
             ctrl.page = 1;
+        }
+
+        function setPageLimitOptions(answers) {
+            if (answers !== null) {
+                ctrl.pageLimitOption = [5];
+                for (let i = 1; i < (answers.length/10).toFixed(0); i++) {
+                    ctrl.pageLimitOption.push(i*10);
+                }
+                ctrl.pageLimitOption.push(answers.length);
+            }
         }
     }
 

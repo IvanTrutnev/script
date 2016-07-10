@@ -19,14 +19,16 @@
                     <md-input-container>
                         <label>Select variable</label>
                         <md-select ng-model="ctrl.multiPlotVariable">
+                            <md-option value="">
+                            </md-option>
                             <md-option ng-repeat="variable in ctrl.listOfVariables" value="{{variable}}" ng-disabled="variable === ctrl.xAxisVariable">
                                 {{variable}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container ng-if="ctrl.multiPlotVariable !== null && ctrl.multiPlotVariable !==''">
                         <label>And it's values</label>
-                        <md-select ng-disable="multiPlotVariable !== null" ng-model="ctrl.multiPlotVariableValues" multiple>
+                        <md-select ng-model="ctrl.multiPlotVariableValues" multiple>
                             <md-option ng-repeat="variableValue in ctrl.variables[ctrl.multiPlotVariable]" value="{{ variableValue }}">
                                 {{ variableValue }}
                             </md-option>

@@ -8,13 +8,12 @@
             templateUrl: 'components/mathApp/math-app-template.html'
         });
 
-    function MathAppController(){
+    function MathAppController(variableService, formulaService){
         let ctrl = this;
 
-
-        ctrl.$onInit = onInit;
         ctrl.onSetFormula = onSetFormula;
         ctrl.onSetVariables = onSetVariables;
+        ctrl.$onInit = onInit;
 
         function onSetFormula(formula, listOfVariables) {
             if(formula !== null) {
@@ -27,45 +26,9 @@
         function onSetVariables(variables) {
             ctrl.variables = variables;
 
-            function fillFunctionsArgs(variables) {
-                let functionArgs = [];
-                let variations = 1;
-                angular.forEach(variables, (value, key) => {
-                    variations *= value.length;
-                });
-                for(let i = 0; i < variations; i++) {
-                    functionArgs.push({});
-                    angular.forEach(variables, (value, key) => {
-                        functionArgs[i][key] = 0;
-                    });
-                }
-                let loop = variations;
-                angular.forEach(variables, (values, key) => {
-                    loop /= values.length;
-                    let index = 0;
-                    for(let j = 0; j<(variations/values.length)/loop; j++) {
-                        for (let value of values) {
-                            for (let i = 0; i < loop; i++) {
-                                functionArgs[index][key] = value;
-                                index++;
-                            }
-                        }
-                    }
-                });
-
-                return functionArgs;
-            }
-
-            function calculate(formula, functionArgs) {
-                for(let args of functionArgs) {
-                    args['f'] = formula.eval(args);
-                }
-                return functionArgs;
-            }
-
             if (variables !== null) {
-                ctrl.functionArgs = fillFunctionsArgs(ctrl.variables);
-                ctrl.answers = calculate(ctrl.formula, ctrl.functionArgs);
+                ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variables);
+                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
             }
             else {
                 ctrl.functionArgs = [];

@@ -11,7 +11,7 @@
             }
         });
 
-    function variablesInputController($scope, notifyService){
+    function variablesInputController($scope, notifyService, variableService){
         let ctrl = this;
 
         $scope.$watch(() => ctrl.listOfVariables, listOfVariablesWatcher);
@@ -21,45 +21,19 @@
         ctrl.resetVariables =  resetVariables;
 
         function setVariables() {
-            let isError = false;
-            let emptyVariables = [];
+            let result = variableService.processVariableValues(ctrl.variables);
 
-            for(let variable in ctrl.variables) {
-                let values = ctrl.variables[variable];
-
-                if (values.length === 0) {
-                    isError = true;
-                    emptyVariables.push(variable);
-                    continue;
-                }
-                else {
-                    //parse and replace all values from string to float
-                    let parsedValues = [];
-                    for (let value of values) {
-                        parsedValues.push(parseFloat(value));
-                    }
-                    ctrl.variables[variable] = parsedValues;
-                }
-
-                ctrl.variables[variable].sort((a, b) => {
-                    if (a < b) return -1;
-                    if (a > b) return 1;
-                });
-            }
-
-            if (isError) {
-                notifyService.variableHasNoValuesNotify(emptyVariables);
+            if (result.isError) {
+                notifyService.variableHasNoValuesNotify(result.emptyVariables);
             }
             else {
+                ctrl.onSetVariables({variables: result.variablesValues});
                 ctrl.showPanel = false;
-                ctrl.onSetVariables({variables: ctrl.variables});
             }
         }
 
         function resetVariables() {
-            for (let variable in ctrl.variables) {
-                ctrl.variables[variable] = [];
-            }
+            variableService.resetVariableValues(ctrl.variables);
             ctrl.onSetVariables({variables: null});
         }
 
@@ -70,26 +44,7 @@
         }
 
         function listOfVariablesWatcher(newValue, oldValue) {
-            if (newValue !== null) {
-                for(let variable of newValue) {
-                    if (!(variable in ctrl.variables)) {
-                        ctrl.variables[variable] = [];
-                    }
-                }
-
-                if (oldValue !== null) {
-
-                    let diff = function(firstArray, secondArray) {
-                        return firstArray.filter(value => secondArray.indexOf(value) < 0);
-                    };
-
-                    let deletedVariables = diff(oldValue, newValue);
-
-                    for (let deletedVariable of deletedVariables) {
-                        delete ctrl.variables[deletedVariable];
-                    }
-                }
-            }
+            ctrl.variables = variableService.checkListOfVariablesChanges(newValue, oldValue, ctrl.variables);
         }
     }
 

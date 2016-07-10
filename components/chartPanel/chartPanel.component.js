@@ -12,32 +12,60 @@
             }
         });
 
-    function ChartPanelController($rootScope, $scope){
+    function ChartPanelController($rootScope, $scope, chartService, notifyService){
         let ctrl = this;
 
+        ctrl.onConfigureChart = onConfigureChart;
+        ctrl.onResetChart = onResetChart;
         ctrl.$onInit = onInit;
 
-        ctrl.onConfigureChart = onConfigureChart;
-
         function onConfigureChart(xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues) {
-            ctrl.xAxisVariable = xAxisVariable;
-            ctrl.multiPlotVariable = multiPlotVariable;
-            ctrl.selectedRestVariables = selectedRestVariables;
-            ctrl.multiPlotVariableValues = multiPlotVariableValues;
+            if (ctrl.formula !== null) {
+                let chartLabels = chartService.getChartLabels(ctrl.variables[xAxisVariable]);
+                let {chartData, chartSeries} = calculateChartPoints(ctrl.formula, multiPlotVariableValues, multiPlotVariable, chartLabels, selectedRestVariables, xAxisVariable);
 
-            console.info('pre draw');
-            console.info(ctrl.variables);
-            console.info(ctrl.xAxisVariable);
-            console.info(ctrl.multiPlotVariable);
-            console.info(ctrl.selectedRestVariables);
-            console.info(ctrl.multiPlotVariableValues);
-            $rootScope.$emit('drawChart', {formula: ctrl.formula, variables: ctrl.variables,xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues});
+                if ('error' in chartData) {
+                    notifyService.notify(chartData.error);
+                }
+                else {
+                    configureChart({chartLabels, chartData, chartSeries});
+                }
+            }
+        }
+
+        function onResetChart() {
+            configureChart();
+        }
+
+        function configureChart(setting=null) {
+            if (setting === null) {
+                ctrl.chartLabels = null;
+                ctrl.chartData = null;
+                ctrl.chartSeries = null;
+                ctrl.showChart = false;
+            }
+            else {
+                ctrl.chartLabels = setting.chartLabels;
+                ctrl.chartData = setting.chartData;
+                ctrl.chartSeries = setting.chartSeries;
+                ctrl.showChart = true;
+            }
         }
 
         function onInit() {
-            onConfigureChart(null, null, null);
+            configureChart();
             ctrl.showPanel = false;
         }
+
+        function calculateChartPoints(formula, multiPlotVariableValues, multiPlotVariable, chartLabels, selectedRestVariables, xAxisVariable) {
+            let chartSeries = chartService.getChartSeries(multiPlotVariable, multiPlotVariableValues);
+            let chartData = chartService.setChartData(multiPlotVariableValues, multiPlotVariable, selectedRestVariables, chartLabels, ctrl.variables, xAxisVariable, formula);
+            for (let i = 0; i < chartLabels.length; i++ ) {
+                chartLabels[i] = parseFloat(chartLabels[i]).toFixed(2);
+            }
+            return {chartData, chartSeries};
+        }
+
     }
 
 })(angular);

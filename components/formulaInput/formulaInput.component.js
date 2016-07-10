@@ -10,16 +10,28 @@
         }
     });
 
-    function FormulaInputController() {
+    function FormulaInputController(formulaService, notifyService) {
         let ctrl = this;
 
-        ctrl.setFormula = setFormula;
-        ctrl.resetFormula = resetFormula;
         ctrl.changeMode = handleChangeMode;
+        ctrl.resetFormula = resetFormula;
         ctrl.$onInit = onInit;
 
-        function setFormula() {
-            console.log(ctrl.onSetFormula);
+        function handleChangeMode() {
+            if (ctrl.editMode) {
+                let result = formulaService.parseRawFormula(ctrl.formula);
+                if ('error' in result) {
+                    notifyService.notify(result.error);
+                }
+                else {
+                    ctrl.formulaText = result.formulaText;
+                    ctrl.onSetFormula({formula: result.parsedFormula, variables: result.variables});
+                    ctrl.editMode = false;
+                }
+            }
+            else {
+                ctrl.editMode = true;
+            }
         }
 
         function resetFormula() {
@@ -28,58 +40,10 @@
             ctrl.editMode = true;
         }
 
-        function handleChangeMode() {
-            if (ctrl.editMode) {
-                let formula = math.parse(ctrl.formula);
-                let variables = findVariables(ctrl.formula);
-                ctrl.formulaText = formula.toTex();
-                ctrl.onSetFormula({formula, variables});
-                ctrl.editMode = false;
-            }
-            else {
-                ctrl.editMode = true;
-            }
-        }
-
-
-        function findVariables(formula) {
-            let functions = ['sin', 'cos', 'log', 'e', 'pi', 'tg', 'ctg'];
-
-            function onlyUnique(value, index, self) {
-                return self.indexOf(value) === index;
-            }
-
-            function diffArrays(first, second) {
-                let M = first.length;
-                let N = second.length;
-                let c = 0;
-                let result = [];
-                for (var i = 0; i < M; i++) {
-                    var j = 0, k = 0;
-                    while (second[j] !== first[ i ] && j < N) j++;
-                    while (result[k] !== first[ i ] && k < c) k++;
-                    if (j == N && k == c) result[c++] = first[ i ];
-                }
-                return result;
-
-            }
-
-            let variables = formula.match(/([a-zA-Z])+/g);
-            if(variables !== null) {
-                variables = variables.filter(onlyUnique);
-                variables = diffArrays(variables, functions);
-            }
-
-            return variables;
-        }
-
-
         function onInit() {
             ctrl.formula = '';
             ctrl.editMode = true;
-
             ctrl.formulaText = ''
-
         }
     }
 
