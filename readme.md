@@ -3,7 +3,7 @@
 Kurulev script is application that provides:
   - Entering math function
   - Calculating math functions with entered values
-  - Draw chart for this function
+  - Drawing chart for this function
 
 # [Life demo]
 
