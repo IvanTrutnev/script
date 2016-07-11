@@ -1,0 +1,12 @@
+/*
+ * Third party
+ */
+@import "../../bower_components/angular-material/angular-material.min.css";
+@import "../../bower_components/angular-material-icons/angular-material-icons.css";
+@import "../../bower_components/angular-material-data-table/dist/md-data-table.min.css";
+
+.my-floating-button {
+  position: absolute;
+  right: 4px;
+  z-index: 1;
+}

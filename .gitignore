@@ -1,2 +1,6 @@
 bower_components/
 .idea/
+.firebaserc
+firebase.json
+node_modules/
+build/

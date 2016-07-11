@@ -26,4 +26,20 @@
             }]
         };
     });
+
+    let a = '';
+
+    let config = {
+        apiKey: "AIzaSyBgfV7YJ8EbMnIQtD4vYDPYsOUZHPZhD9k",
+        authDomain: "kurulev-script.firebaseapp.com",
+        databaseURL: "https://kurulev-script.firebaseio.com",
+        storageBucket: "kurulev-script.appspot.com"
+    };
+    firebase.initializeApp(config);
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then((reg) => {console.info(reg)})
+            .catch((e) => {console.error('Error during service worker registration', e)});
+    }
 })(angular);
