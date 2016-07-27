@@ -8,9 +8,9 @@ KS is SPA application that provides:
   - Viewing shared formulas
   - Like/dislike functionality
   - Edit mode in viewing shared formula
-  - Login/logout via google, twiiter
+  - Login/logout via google, twiiter, facebook
 
-KS also was builded using [PWA] concept. As service worker was used script generated via [sw-precache]. Thereby core functionality available in offline.
+KS also was builded using [PWA] concept. As service worker was used script generated via [sw-precache]. Thereby it core functionality available in offline.
 
 # [Life demo]
 
