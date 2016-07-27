@@ -1,6 +1,5 @@
-# Kurulev script
-
-KS is SPA application that provides:
+# Kurulev script #
+### KS is SPA application that provide:
   - Entering math function
   - Calculating math functions with entered values
   - Drawing chart for this function
@@ -14,7 +13,7 @@ KS also was builded using [PWA] concept. As service worker was used script gener
 
 # [Life demo]
 
-Used frameworks, modules and tools:
+### Used frameworks, modules and tools:
   - [Angular.js] - MVVC framework.
   - [Math.js] - formula parsing, calculating
   - [MathJax] - viewing formula
