@@ -1,0 +1,15 @@
+<md-content md-scroll-y>
+    <div ng-if="ctrl.sharedFormulas" layout="row" layout-wrap layout-align="center center">
+        <shared-formula-preview ng-repeat="sharedFormula in ctrl.sharedFormulas"
+                                shared-formula="sharedFormula"
+                                $router="ctrl.$router"
+                                flex="100" flex-gt-sm="50" flex-gt-md="33"
+                                layout-fill>
+
+        </shared-formula-preview>
+    </div>
+
+    <div layout-fill ng-if="!ctrl.sharedFormulas" layout="row" layout-align="center center">
+        <md-progress-circular md-diameter="120"></md-progress-circular>
+    </div>
+</md-content>

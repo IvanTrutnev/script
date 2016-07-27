@@ -10,3 +10,33 @@
   right: 4px;
   z-index: 1;
 }
+
+.site-sidenav {
+  width: 272px;
+  min-width: 272px;
+  max-width: 272px;
+  background: #106cc8;
+}
+.sidenav-link {
+  ng-md-icon {
+    fill: #f2f7fc;
+  }
+  p {
+    color: #f2f7fc;
+  }
+}
+.sidenav-link.active, .sidenav-link:hover {
+  background: #267ED5;
+}
+
+.user-avatar {
+  border-radius: 100%;
+  height: 64px;
+  width: 64px;
+}
+
+.user-avatar-sm {
+  border-radius: 100%;
+  height: 46px;
+  width: 46px;
+}

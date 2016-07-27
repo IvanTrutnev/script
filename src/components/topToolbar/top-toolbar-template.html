@@ -1,0 +1,14 @@
+<md-toolbar layout="row" class="md-whiteframe-z2">
+    <div class="md-toolbar-tools">
+        <md-button ng-click="ctrl.toggleSidenav()" layout-align="center center" class="md-icon-button" hide-gt-sm ng-click="" aria-label="show side nav">
+            <ng-md-icon icon="menu"></ng-md-icon>
+        </md-button>
+        <span flex show-gt-sm></span>
+        <p>Kurulev script math app</p>
+        <span flex></span>
+        <md-button class="" ng-click="ctrl.changeAuthState($event)">
+            <ng-md-icon icon="{{ ctrl.isUserExist ? 'logout' : 'login'}}" style=""></ng-md-icon>
+            {{ ctrl.isUserExist ? 'Logout' : 'Login' }}
+        </md-button>
+    </div>
+</md-toolbar>

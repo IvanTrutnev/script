@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     rimraf = require('rimraf'),
     browserSync = require('browser-sync'),
     swPrecache = require('sw-precache'),
+    spa = require('browser-sync-spa');
     reload = browserSync.reload;
 
 var path = {
@@ -91,7 +92,15 @@ gulp.task('generate-service-worker', function(cb) {
     swPrecache.write('build/service-worker.js', {
         cacheId: 'kurulev',
         staticFileGlobs: [
-            'build/**/*.*'
+            'build/*.html',
+            'build/*.json',
+            'build/js/*.js',
+            'build/js/third-party.js',
+            'build/images/**/*.png',
+            'build/directives/**/*.html',
+            'build/dialogs/**/*.html',
+            'build/components/**/*.html',
+            'build/css/main.css'
         ],
         stripPrefix: 'build',
         runtimeCaching: [{
@@ -99,6 +108,9 @@ gulp.task('generate-service-worker', function(cb) {
             handler: 'cacheFirst'
         }, {
             urlPattern: /^https:\/\/cdn.mathjax.org\/\.*/,
+            handler: 'cacheFirst'
+        }, {
+            urlPattern: /^https:\/\/fonts.googleapis.com\/\.*/,
             handler: 'cacheFirst'
         }]
     }, cb);
@@ -114,6 +126,12 @@ gulp.task('build', [
 ]);
 
 gulp.task('webserver', function () {
+    browserSync.use(spa({
+        selector: "[ng-app]",
+        history: {
+            index: '/index.html'
+        }
+    }));
     browserSync(config);
 });
 

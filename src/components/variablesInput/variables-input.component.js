@@ -6,45 +6,69 @@
             controllerAs: 'ctrl',
             templateUrl: 'components/variablesInput/variables-input-template.html',
             bindings: {
+                isEditMode: '<',
                 listOfVariables: '<',
+                variablesValues: '<',
                 onSetVariables: '&'
             }
         });
 
-    function variablesInputController($scope, notifyService, variableService){
+    function variablesInputController(notifyService, variableService){
         let ctrl = this;
 
-        $scope.$watch(() => ctrl.listOfVariables, listOfVariablesWatcher);
-
         ctrl.$onInit = onInit;
-        ctrl.setVariables = setVariables;
-        ctrl.resetVariables =  resetVariables;
+        ctrl.$onChanges = onChanges;
+        ctrl.setVariablesValues = setVariablesValues;
+        ctrl.resetVariablesValues =  resetVariablesValues;
+        ctrl.onAdd = onAdd;
 
-        function setVariables() {
-            let result = variableService.processVariableValues(ctrl.variables);
-
-            if (result.isError) {
-                notifyService.variableHasNoValuesNotify(result.emptyVariables);
-            }
-            else {
-                ctrl.onSetVariables({variables: result.variablesValues});
-                ctrl.showPanel = false;
-            }
+        function setVariablesValues() {
+            variableService.processVariableValues(ctrl.variablesValues)
+                .then(() => {
+                    ctrl.onSetVariables({variablesValues: ctrl.variablesValues});
+                    ctrl.showPanel = false;
+                })
+                .catch(error => {
+                    notifyService.notify(error.message);
+                });
         }
 
-        function resetVariables() {
-            variableService.resetVariableValues(ctrl.variables);
-            ctrl.onSetVariables({variables: null});
+        function resetVariablesValues() {
+            ctrl.variablesValues = variableService.resetVariableValues(ctrl.variablesValues);
+            ctrl.onSetVariables({variablesValues: null});
+        }
+
+        function onAdd(value) {
+            if (!isFinite(value)) {
+                return null;
+            }
+            return value = Number(value);
         }
 
         function onInit() {
             ctrl.showPanel = true;
             ctrl.listOfVariables = [];
-            ctrl.variables = {};
+            ctrl.variablesValues = {};
+            if (ctrl.isEditMode === undefined) {
+                ctrl.isEditMode = true;
+            }
+            //ctrl.isEditMode = true;
         }
 
-        function listOfVariablesWatcher(newValue, oldValue) {
-            ctrl.variables = variableService.checkListOfVariablesChanges(newValue, oldValue, ctrl.variables);
+        function onChanges(changesObject) {
+            if ('listOfVariables' in changesObject) {
+                onChangesListOfVariables(changesObject.listOfVariables);
+            }
+        }
+
+        function onChangesListOfVariables({currentValue, previousValue}) {
+            ctrl.showPanel = true;
+
+            if (currentValue === null || currentValue === undefined) {
+                ctrl.variablesValues = {};
+                return;
+            }
+            ctrl.variablesValues = variableService.checkListOfVariablesChanges(currentValue, previousValue, ctrl.variablesValues);
         }
     }
 

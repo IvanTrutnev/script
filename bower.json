@@ -9,7 +9,9 @@
     "MathJax": "~2.5",
     "mathjs": "~3.2",
     "angular-chart.js": "~1.0",
-    "firebase": "~3.1"
+    "firebase": "~3.1",
+    "angularfire": "~2.0",
+    "angular-component-router": "~0.2"
   },
   "private": true
 }

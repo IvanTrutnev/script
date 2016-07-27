@@ -11,26 +11,41 @@
         service.checkListOfVariablesChanges = checkListOfVariablesChanges;
         service.getFunctionArgs = getFunctionArgs;
 
+        /**
+         * Function that check for variables without values
+         * If all ok it's return promise without data
+         * If there are variables without values its throw error (reject promise)
+         *                  (message='Variables a, b, c have no values! Add it!')
+         *
+         * @param {object} variablesValues - object contains variables values {'someVariable': [1, 2, 3]}
+         * @returns {Promise}
+         */
         function processVariableValues(variablesValues) {
-            let isError = false;
-            let emptyVariables = [];
+            return new Promise((resolve) => {
+                let isError = false;
+                let emptyVariables = [];
 
-            for (let variable in variablesValues) {
-                let values = variablesValues[variable];
+                for (let variable in variablesValues) {
+                    let values = variablesValues[variable];
 
-                if (values.length === 0) {
-                    isError = true;
-                    emptyVariables.push(variable);
+                    if (values.length === 0) {
+                        isError = true;
+                        emptyVariables.push(variable);
 
+                    }
                 }
-                else {
-                    variablesValues[variable] = parseVariableValues(values);
-                }
-            }
 
-            return {variablesValues, emptyVariables, isError};
+                if (isError) {
+                    throw new Error(`Variables ${emptyVariables} have no values! Add it!`)
+                }
+                resolve();
+            });
         }
 
+        /**
+         * @param {object} variablesValues - object contains variables values {'someVariable': ['1', '2', '3']}
+         * @returns  {object} - object contains variables values {'someVariable': []}
+         */
         function resetVariableValues(variablesValues) {
             for (let variable in variablesValues) {
                 variablesValues[variable] = [];
@@ -38,16 +53,26 @@
             return variablesValues;
         }
 
-        function checkListOfVariablesChanges(newValue, oldValue, variablesValues) {
-            if (newValue !== null) {
-                for(let variable of newValue) {
+        /**
+         * Function that delete all variables values for variables, that exist in old list of variables but don't exist
+         *                                                                                                   in current
+         *
+         * @param {array} newVariables - array of current variables
+         * @param {array} oldVariables - array of old variables
+         * @param {object} variablesValues variablesValues - object contains variables values
+         *                                                   {'someVariable': [1, 2, 3]}
+         * @returns {object}
+         */
+        function checkListOfVariablesChanges(newVariables, oldVariables, variablesValues) {
+            if (newVariables !== null) {
+                for(let variable of newVariables) {
                     if (!(variable in variablesValues)) {
                         variablesValues[variable] = [];
                     }
                 }
 
-                if (oldValue !== null) {
-                    let deletedVariables = arrayDiff(oldValue, newValue);
+                if (oldVariables !== null && oldVariables !== undefined) {
+                    let deletedVariables = arrayDiff(oldVariables, newVariables);
 
                     for (let deletedVariable of deletedVariables) {
                         delete variablesValues[deletedVariable];

@@ -13,17 +13,42 @@
 
         const ALLOWED_MATH_FUNCTIONS_AND_CONST = ['sin', 'cos', 'log', 'e', 'pi'];
 
+        /*
+         * Function that check is raw formula valid
+         * If formula is valid its return (in resolved promise):
+         *      - TeX representation of formula
+         *      - Array of variables
+         *      - parsed via Math.js formula
+         * If formula in invalid its return (in rejected promise) error with description in error.message.
+         * Possible errors:
+         *      - Math.js parse error (message = 'Formula is invalid!')
+         *      - Function has no variables (message = 'There are no variables!')
+         *      - Parsed formula can not be executed with all variables = 1 (message = 'Formula is invalid!')
+         *
+         * @param {string} rawFormula - string representation of formula (for example 'a+b+c')
+         * @return {promise} result
+         */
         function parseRawFormula(rawFormula) {
-            let variables = findVariables(rawFormula);
-            let parsedFormula = math.parse(rawFormula);
-            let formulaText = parsedFormula.toTex();
-            let isFormulaValid = checkFunctionValid(parsedFormula, variables);
+            return new Promise((resolve, reject) => {
+                let parsedFormula = null;
+                try {
+                    parsedFormula = math.parse(rawFormula);
+                }
+                catch(e) {
+                    throw new Error('Formula is invalid!');
+                }
 
-            return (isFormulaValid.error === null) ? {
-                variables,
-                parsedFormula,
-                formulaText
-            } : {error: isFormulaValid.error};
+                let variables = findVariables(rawFormula);
+                let formulaText = parsedFormula.toTex();
+                let isFormulaValid = checkFunctionValid(parsedFormula, variables);
+
+                if (isFormulaValid) {
+                    resolve({variables, parsedFormula, formulaText});
+                }
+                else {
+                    reject(new Error(isFormulaValid.error));
+                }
+            });
         }
 
         function executeFormulaForTable(compiledFormula, formulaArgs) {
@@ -68,6 +93,13 @@
             return firstArray.filter(value => secondArray.indexOf(value) < 0);
         }
 
+        /**
+         * supporting function for service.parseRawFormula
+         *
+         * @param {object} parsedFormula - parsed via Math.js formula
+         * @param {array} variables - array of variables
+         * @returns {true|object} - return true if formula valid, {error: 'some error desc'} if invalid
+         */
         function checkFunctionValid(parsedFormula, variables) {
             if (variables === null) {
                 return {error: 'There are no variables!'};
@@ -84,7 +116,7 @@
             catch (e) {
                 return {error: 'Formula is invalid!'};
             }
-            return {error: null};
+            return true;
         }
 
     }

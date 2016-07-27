@@ -1,0 +1,64 @@
+<md-content md-scroll-y>
+    <md-card ng-if="ctrl.loaded" flex>
+        <md-card-header>
+            <md-card-avatar>
+                <user-avatar avatar="ctrl.sharedFormula.userProfile.photoURL" avatar-class="user-avatar-sm"></user-avatar>
+            </md-card-avatar>
+            <md-card-header-text>
+                <span class="md-title">{{ ctrl.sharedFormula.userProfile.displayName }}</span>
+                <span class="md-subhead">{{ ctrl.sharedFormula.dateCreated * 1000 | date:'medium' }}</span>
+            </md-card-header-text>
+        </md-card-header>
+
+        <img ng-if="!ctrl.sharedFormula.imageURL" src="../../images/blank-image.png" class="md-card-image">
+        <chart-panel ng-if="ctrl.sharedFormula.imageURL"
+                     chart-config="ctrl.chartConfig"
+                     list-of-variables="ctrl.listOfVariables"
+                     variables="ctrl.variablesValues"
+                     formula="ctrl.formula"
+                     is-edit-mode="ctrl.editMode"
+                     layout="column">
+        </chart-panel>
+
+        <md-card-title>
+            <span class="md-headline" mathjax-bind="ctrl.sharedFormula.formulaTex"></span>
+        </md-card-title>
+        <md-card-content>
+            <variables-input list-of-variables="ctrl.listOfVariables"
+                             variables-values="ctrl.sharedFormula.variablesValues"
+                             is-edit-mode="ctrl.editMode"
+                             on-set-variables="ctrl.onSetVariables(variablesValues)"
+                             layout="column">
+            </variables-input>
+            <function-table list-of-variables="ctrl.listOfVariables"
+                            answers="ctrl.answers"
+                            layout="column"
+                            layout-padding>
+            </function-table>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="start center">
+            <div layout="row" layout-align="start center">
+                <md-card-icon-actions>
+                    <md-button class="md-icon-button" ng-click="ctrl.like()">
+                        <md-icon>
+                            <ng-md-icon icon="thumb_up"></ng-md-icon>
+                        </md-icon>
+                    </md-button>
+                </md-card-icon-actions>
+                <span>{{ ctrl.sharedFormula.userLikeItId.length }}</span>
+            </div>
+            <span flex></span>
+            <div layout="row" layout-align="end center">
+                <md-switch ng-model="ctrl.editMode">
+                    Edit mode
+                </md-switch>
+            </div>
+        </md-card-actions>
+
+    </md-card>
+
+    <div layout-fill ng-if="!ctrl.loaded" layout="row" layout-align="center center">
+        <md-progress-circular md-diameter="120"></md-progress-circular>
+    </div>
+
+</md-content>

@@ -7,3 +7,4 @@
 //= ../services/variables-service.js
 //= ../services/formula-service.js
 //= ../services/chart-service.js
+//= ../services/shared-functions-service.js

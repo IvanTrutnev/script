@@ -1,18 +1,19 @@
-<md-button class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
+<md-button ng-if="ctrl.isEditMode" class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
     <md-icon>
         <ng-md-icon icon="{{ ctrl.showPanel ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}"></ng-md-icon>
     </md-icon>
 </md-button>
 
-<div ng-show="ctrl.showPanel">
+<div ng-show="ctrl.showPanel && ctrl.isEditMode">
     <chart-constructor list-of-variables="ctrl.listOfVariables"
+                       chart-config="ctrl.chartConfig"
                        variables="ctrl.variables"
                        on-configure-chart="ctrl.onConfigureChart(xAxisVariable, multiPlotVariable, selectedRestVariables,multiPlotVariableValues)">
 
     </chart-constructor>
 </div>
 
-<div ng-hide="ctrl.showPanel" layout="row" layout-align="center center">
+<div ng-hide="ctrl.showPanel || !ctrl.isEditMode" layout="row" layout-align="center center">
     <h4>Chart constructor</h4>
 </div>
 

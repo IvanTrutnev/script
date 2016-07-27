@@ -11,27 +11,28 @@
             }
         });
 
-    function FunctionTableController($scope){
+    function FunctionTableController(){
         let ctrl = this;
 
         ctrl.$onInit = onInit;
-
-        $scope.$watch(() => ctrl.answers, setPageLimitOptions);
+        ctrl.$onChange = onChange();
 
         function onInit() {
             ctrl.showPanel = false;
             ctrl.pageLimit = 10;
-            ctrl.pageLimitOption = [];
+            if (ctrl.pageLimitOption == null) {
+                ctrl.pageLimitOption = [];
+            }
             ctrl.page = 1;
         }
 
-        function setPageLimitOptions(answers) {
-            if (answers !== null) {
-                ctrl.pageLimitOption = [5];
-                for (let i = 1; i < (answers.length/10).toFixed(0); i++) {
-                    ctrl.pageLimitOption.push(i*10);
+        function onChange() {
+            if (ctrl.answers !== null) {
+                ctrl.pageLimitOptions = [5];
+                for (let i = 1; i < (ctrl.answers.length/10).toFixed(0); i++) {
+                    ctrl.pageLimitOptions.push(i*10);
                 }
-                ctrl.pageLimitOption.push(answers.length);
+                ctrl.pageLimitOptions.push(ctrl.answers.length);
             }
         }
     }

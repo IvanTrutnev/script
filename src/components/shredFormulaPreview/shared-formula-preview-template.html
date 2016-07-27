@@ -1,0 +1,29 @@
+<md-card>
+    <md-card-header>
+        <md-card-avatar>
+            <user-avatar avatar="ctrl.sharedFormula.userProfile.photoURL" avatar-class="user-avatar-sm"></user-avatar>
+        </md-card-avatar>
+        <md-card-header-text>
+            <span class="md-title">{{ ctrl.sharedFormula.userProfile.displayName }}</span>
+            <span class="md-subhead">{{ ctrl.sharedFormula.dateCreated * 1000 | date:'medium' }}</span>
+        </md-card-header-text>
+    </md-card-header>
+    <img ng-if="ctrl.sharedFormula.imageURL" ng-src="{{ ctrl.sharedFormula.imageURL }}" class="md-card-image">
+    <img ng-if="!ctrl.sharedFormula.imageURL" src="../../images/blank-image.png" class="md-card-image">
+    <md-card-title>
+        <span class="md-headline" mathjax-bind="ctrl.sharedFormula.formulaTex"></span>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="start center">
+        <md-button ng-link="['SharedFunction', {id: ctrl.sharedFormula.$id}]">Show it</md-button>
+        <div layout="row" layout-align="center center">
+            <md-card-icon-actions>
+                <md-button class="md-icon-button" ng-click="ctrl.like()">
+                    <md-icon>
+                        <ng-md-icon icon="thumb_up"></ng-md-icon>
+                    </md-icon>
+                </md-button>
+            </md-card-icon-actions>
+            <span>{{ ctrl.sharedFormula.userLikeItId.length }}</span>
+        </div>
+    </md-card-actions>
+</md-card>

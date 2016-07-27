@@ -1,9 +1,9 @@
 <md-input-container ng-show="ctrl.editMode" class="md-block">
     <label>Formula</label>
-    <input ng-model="ctrl.formula">
+    <input ng-model="ctrl.rawFormula">
 </md-input-container>
 <span ng-hide="ctrl.editMode" mathjax-bind="ctrl.formulaText"></span>
 <div layout="row" layout-align="center center">
-    <md-button class="md-raised md-warn" ng-disabled="ctrl.formula === ''" ng-click="ctrl.resetFormula()">Reset</md-button>
-    <md-button class="md-raised md-primary" ng-disabled="ctrl.formula === ''" ng-click="ctrl.changeMode()">{{ ctrl.editMode ? 'Apply' : 'Edit' }}</md-button>
+    <md-button ng-disabled="ctrl.rawFormula === ''" ng-click="ctrl.resetFormula()">Reset</md-button>
+    <md-button ng-disabled="ctrl.rawFormula === ''" ng-click="ctrl.changeMode()">{{ ctrl.editMode ? 'Apply' : 'Edit' }}</md-button>
 </div>

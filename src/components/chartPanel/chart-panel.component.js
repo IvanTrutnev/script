@@ -6,9 +6,12 @@
             controllerAs: 'ctrl',
             templateUrl: 'components/chartPanel/chart-panel-template.html',
             bindings: {
+                onChartDone: '&',
                 listOfVariables: '<',
                 variables: '<',
-                formula: '<'
+                formula: '<',
+                chartConfig: '<',
+                isEditMode: '<'
             }
         });
 
@@ -17,7 +20,9 @@
 
         ctrl.onConfigureChart = onConfigureChart;
         ctrl.onResetChart = onResetChart;
+        //ctrl.onChartDone = onChartDone;
         ctrl.$onInit = onInit;
+        ctrl.$onChanges = onChanges;
 
         function onConfigureChart(xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues) {
             if (ctrl.formula !== null) {
@@ -29,12 +34,19 @@
                 }
                 else {
                     configureChart({chartLabels, chartData, chartSeries});
+                    chartDone(xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues);
                 }
             }
         }
 
         function onResetChart() {
             configureChart();
+        }
+
+        function chartDone(xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues) {
+            let config = {xAxisVariable, multiPlotVariable, selectedRestVariables, multiPlotVariableValues};
+
+            ctrl.onChartDone({config});
         }
 
         function configureChart(setting=null) {
@@ -53,8 +65,15 @@
         }
 
         function onInit() {
-            configureChart();
-            ctrl.showPanel = false;
+            ctrl.isEditMode = ctrl.isEditMode ? true : false;
+            if (!ctrl.isEditMode && ctrl.chartConfig !== undefined) {
+                ctrl.showPanel = true;
+                onConfigureChart(ctrl.chartConfig.xAxisVariable, ctrl.chartConfig.multiPlotVariable, ctrl.chartConfig.selectedRestVariables, ctrl.chartConfig.multiPlotVariableValues)
+            }
+            else {
+                configureChart();
+                ctrl.showPanel = false;
+            }
         }
 
         function calculateChartPoints(formula, multiPlotVariableValues, multiPlotVariable, chartLabels, selectedRestVariables, xAxisVariable) {
@@ -65,6 +84,15 @@
             }
             return {chartData, chartSeries};
         }
+
+        function onChanges(chengesObj) {
+            console.info('debug chart panel');
+            if ('formula' in chengesObj) {
+                let currentValue = chengesObj.formula.currentValue,
+                    previousValue = chengesObj.formula.previousValue;
+            }
+        }
+
 
     }
 

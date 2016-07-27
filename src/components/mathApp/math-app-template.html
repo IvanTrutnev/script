@@ -1,30 +1,48 @@
-<formula-input on-set-formula="ctrl.onSetFormula(formula, variables)"
-               layout="column"
-               layout-padding
-               class="md-whiteframe-1dp">
-</formula-input>
+<md-content layout-margin layout-fill md-scroll-y>
+    <formula-input raw-formula="ctrl.rawFormula"
+                   on-set-formula="ctrl.onSetFormula(formula, variables, rawFormula, formulaTex)"
+                   layout="column"
+                   layout-padding
+                   class="md-whiteframe-1dp">
+    </formula-input>
 
-<variables-input list-of-variables="ctrl.listOfVariables"
-                 on-set-variables="ctrl.onSetVariables(variables)"
-                 ng-show="ctrl.listOfVariables !== null"
+    <variables-input list-of-variables="ctrl.listOfVariables"
+                     variables-values="ctrl.variablesValues"
+                     is-edit-mode="ctrl.editMode"
+                     on-set-variables="ctrl.onSetVariables(variablesValues)"
+                     ng-show="ctrl.listOfVariables !== null"
+                     layout="column"
+                     layout-padding
+                     class="md-whiteframe-1dp">
+    </variables-input>
+
+    <function-table list-of-variables="ctrl.listOfVariables"
+                    answers="ctrl.answers"
+                    ng-hide="ctrl.answers === null"
+                    layout="column"
+                    layout-padding
+                    class="md-whiteframe-1dp">
+    </function-table>
+
+    <chart-panel chart-data="ctrl.chartData"
+                 list-of-variables="ctrl.listOfVariables"
+                 variables="ctrl.variablesValues"
+                 formula="ctrl.formula"
+                 is-edit-mode="ctrl.editMode"
+                 on-chart-done="ctrl.onChartDone(config)"
+                 ng-hide="ctrl.answers === null"
                  layout="column"
                  layout-padding
                  class="md-whiteframe-1dp">
-</variables-input>
+    </chart-panel>
 
-<function-table list-of-variables="ctrl.listOfVariables"
-                answers="ctrl.answers"
-                ng-hide="ctrl.answers === null"
-                layout="column"
-                layout-padding
-                class="md-whiteframe-1dp">
-</function-table>
+    <div layout="row" ng-if="ctrl.user !== null && ctrl.answers !== null">
+        <span flex></span>
+        <md-button ng-click="ctrl.shareFunction()">
+            <ng-md-icon icon="send"></ng-md-icon>
+            Share
+        </md-button>
+        <span flex></span>
+    </div>
 
-<chart-panel list-of-variables="ctrl.listOfVariables"
-             variables="ctrl.variables"
-             formula="ctrl.formula"
-             ng-hide="ctrl.answers === null"
-             layout="column"
-             layout-padding
-             class="md-whiteframe-1dp">
-</chart-panel>
+</md-content>

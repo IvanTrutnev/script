@@ -1,22 +1,22 @@
-<md-button class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
+<md-button ng-show="ctrl.isEditMode" class="md-icon-button my-floating-button" ng-click="ctrl.showPanel = !ctrl.showPanel">
     <md-icon>
         <ng-md-icon icon="{{ ctrl.showPanel ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}"></ng-md-icon>
     </md-icon>
 </md-button>
 
-<div ng-show="ctrl.showPanel">
+<div ng-show="ctrl.showPanel || !ctrl.isEditMode">
     <div ng-repeat="variable in ctrl.listOfVariables track by $index">
         {{variable}}
-        <md-chips ng-model="ctrl.variables[variable]" >
+        <md-chips ng-model="ctrl.variablesValues[variable]" md-transform-chip="ctrl.onAdd($chip)" readonly="!ctrl.isEditMode">
             <input placeholder="Add">
         </md-chips>
     </div>
-    <div layout="row" layout-align="center center">
-        <md-button ng-click="ctrl.resetVariables()">reset variables</md-button>
-        <md-button ng-click="ctrl.setVariables()">set variables</md-button>
+    <div ng-if="ctrl.isEditMode" layout="row" layout-align="center center">
+        <md-button ng-click="ctrl.resetVariablesValues()">reset values</md-button>
+        <md-button ng-click="ctrl.setVariablesValues()">set values</md-button>
     </div>
 </div>
 
-<div ng-hide="ctrl.showPanel" layout="row" layout-align="center center">
+<div ng-hide="ctrl.showPanel || !ctrl.isEditMode" layout="row" layout-align="center center">
     <h4>Variables input panel</h4>
 </div>

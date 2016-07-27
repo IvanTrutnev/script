@@ -11,7 +11,7 @@
                ng-model="selected"
                md-progress="ctrl.promise">
 
-            <thead md-head md-order="query.order" >
+            <thead md-head md-order="ctrl.order" >
             <tr md-row>
                 <th md-column
                     ng-repeat="variable in ctrl.listOfVariables"
@@ -37,7 +37,7 @@
 
         </table>
     </md-table-container>
-    <md-table-pagination md-limit="ctrl.pageLimit" md-limit-options="ctrl.pageLimitOption"
+    <md-table-pagination md-limit="ctrl.pageLimit" md-limit-options="ctrl.pageLimitOptions"
                          md-page="ctrl.page" md-total="{{ ctrl.answers.length }}"
                          md-page-select="ctrl.options.pageSelect">
 

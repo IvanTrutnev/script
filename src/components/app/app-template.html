@@ -1,0 +1,27 @@
+<md-sidenav layout-fill layout="column" class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+    <md-toolbar class="md-tall md-hue-2">
+        <div ng-if="ctrl.user !== null" layout="column" class="md-toolbar-tools-bottom inset">
+            <user-avatar avatar="ctrl.user.photoURL"></user-avatar>
+            <span></span>
+            <div>{{ ctrl.user.displayName }}</div>
+            <div>{{ ctrl.user.email }}</div>
+        </div>
+
+        <div ng-if="ctrl.user === null" layout="column" class="md-toolbar-tools-bottom inset">
+            <div>Please login to use all app features</div>
+        </div>
+    </md-toolbar>
+    <md-list>
+        <md-list-item class="sidenav-link" ng-class="{'active': link.isActive}" ng-repeat="link in ctrl.sidevanLinks" md-ink-ripple layout="row" ng-click="ctrl.goTo(link)">
+            <ng-md-icon icon="{{link.icon}}"></ng-md-icon>
+            <p>{{link.title}}</p>
+        </md-list-item>
+    </md-list>
+</md-sidenav>
+
+<div class="relative" layout-fill role="main" layout="column">
+    <top-toolbar></top-toolbar>
+    <md-content md-scroll-y>
+        <ng-outlet ></ng-outlet>
+    </md-content>
+</div>

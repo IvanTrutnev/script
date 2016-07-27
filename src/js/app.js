@@ -1,7 +1,10 @@
 (function(angular){
     "use strict";
 
-    angular.module('mathApp', ['ngMaterial', 'md.data.table', 'chart.js', 'ngMdIcons']);
+    angular.module('mathApp', ['ngMaterial', 'md.data.table', 'chart.js', 'ngMdIcons', 'firebase', 'ngComponentRouter']);
+    angular.module('mathApp')
+        .config(($locationProvider) => {$locationProvider.html5Mode(true)})
+        .value('$routerRootComponent', 'app');
 
     MathJax.Hub.Config({
         skipStartupTypeset: true,
@@ -37,9 +40,11 @@
     };
     firebase.initializeApp(config);
 
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-            .then((reg) => {console.info(reg)})
-            .catch((e) => {console.error('Error during service worker registration', e)});
-    }
+    //if ('serviceWorker' in navigator) {
+    //    navigator.serviceWorker.register('service-worker.js')
+    //        .then((reg) => {
+    //                console.info(reg);
+    //        })
+    //        .catch((e) => {console.error('Error during service worker registration', e)});
+    //}
 })(angular);
