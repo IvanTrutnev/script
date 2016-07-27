@@ -41,7 +41,7 @@ Used frameworks, modules and tools:
    [Angular Chart]: <https://jtblin.github.io/angular-chart.js/>
    [Firebase]: <https://firebase.google.com/>
    [Gulp]: <http://gulpjs.com/>
-   [PWA] : <https://developers.google.com/web/progressive-web-apps/>
-   [sw-precache] : <https://github.com/GoogleChrome/sw-precache>
-   [Firebase] : <https://firebase.google.com/>
-   [Angular fire] : <https://github.com/firebase/angularfire>
+   [PWA]: <https://developers.google.com/web/progressive-web-apps/>
+   [sw-precache]: <https://github.com/GoogleChrome/sw-precache>
+   [Firebase]: <https://firebase.google.com/>
+   [Angular fire]: <https://github.com/firebase/angularfire>
