@@ -40,9 +40,10 @@
                         values.sort((a, b) =>  a < b ? -1 : 1);
                         ctrl.listOfVariables.push(key);
                     }
+                    ctrl.functionName = ctrl.sharedFormula.functionName || 'f';
                     ctrl.formula = math.parse(ctrl.sharedFormula.rawFormula).compile();
                     ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variablesValues);
-                    ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
+                    ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionName, ctrl.functionArgs);
                     console.info('debug');
                 })
                 .catch((error) => {

@@ -56,7 +56,7 @@
                 }
 
                 if (isFormulaValid) {
-                    resolve({variables, parsedFormula, formulaText, functionName});
+                    resolve({variables, parsedFormula, formulaText, functionName, formulaException});
                 }
                 else {
                     reject(new Error(isFormulaValid.error));
@@ -65,7 +65,7 @@
         }
 
         function executeFormulaForTable(compiledFormula, functionName, formulaArgs) {
-            if (functionName === null) {
+            if (functionName === null || functionName === undefined) {
                 functionName = 'f';
             }
             console.info('table');

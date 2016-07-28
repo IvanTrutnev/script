@@ -58,6 +58,7 @@
                 formula: result.parsedFormula,
                 functionName: result.functionName,
                 variables: result.variables,
+                formulaException: result.formulaException,
                 rawFormula: ctrl.rawFormula,
                 formulaTex: ctrl.formulaText
             });
