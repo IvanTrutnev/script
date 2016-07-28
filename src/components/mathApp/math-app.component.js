@@ -17,8 +17,9 @@
         ctrl.shareFunction = shareFunction;
         ctrl.$onInit = onInit;
 
-        function onSetFormula(formula, listOfVariables, rawFormula, formulaTex) {
+        function onSetFormula(formula, functionName, listOfVariables, rawFormula, formulaTex) {
             if(formula !== null && ctrl.rawFormula !== rawFormula) {
+                ctrl.functionName = functionName;
                 ctrl.rawFormula = rawFormula;
                 ctrl.formulaTex = formulaTex;
                 ctrl.formula = formula.compile();
@@ -35,7 +36,7 @@
 
             if (variablesValues !== null) {
                 ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variablesValues);
-                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
+                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionName, ctrl.functionArgs);
             }
             else {
                 ctrl.functionArgs = [];

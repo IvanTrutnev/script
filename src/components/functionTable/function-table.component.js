@@ -7,6 +7,7 @@
             templateUrl: 'components/functionTable/function-table-template.html',
             bindings: {
                 listOfVariables: '<',
+                functionName: '<',
                 answers: '<'
             }
         });
@@ -15,7 +16,7 @@
         let ctrl = this;
 
         ctrl.$onInit = onInit;
-        ctrl.$onChange = onChange();
+        ctrl.$onChanges = onChanges;
 
         function onInit() {
             ctrl.showPanel = false;
@@ -26,13 +27,18 @@
             ctrl.page = 1;
         }
 
-        function onChange() {
+        function onChanges(changesObj) {
             if (ctrl.answers !== null) {
                 ctrl.pageLimitOptions = [5];
                 for (let i = 1; i < (ctrl.answers.length/10).toFixed(0); i++) {
                     ctrl.pageLimitOptions.push(i*10);
                 }
                 ctrl.pageLimitOptions.push(ctrl.answers.length);
+            }
+            if ('functionName' in changesObj) {
+                if (ctrl.functionName === null) {
+                    ctrl.functionName = 'f';
+                }
             }
         }
     }

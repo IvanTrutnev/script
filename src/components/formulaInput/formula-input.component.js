@@ -56,6 +56,7 @@
             ctrl.formulaText = result.formulaText;
             ctrl.onSetFormula({
                 formula: result.parsedFormula,
+                functionName: result.functionName,
                 variables: result.variables,
                 rawFormula: ctrl.rawFormula,
                 formulaTex: ctrl.formulaText
