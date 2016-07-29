@@ -100,6 +100,19 @@
                     delete config.selectedRestVariables[config.multiPlotVariable];
                 }
             }
+            console.info('prepareee');
+            config.multiPlotVariableValues = config.multiPlotVariableValues.filter((value) =>  {
+                return ctrl.variables[config.multiPlotVariable].indexOf(Number(value)) !== -1;
+            });
+            //for (let value of config.multiPlotVariableValues) {
+            //    console.log(ctrl.variables[config.multiPlotVariable]);
+            //    let valuesValueIndex = ctrl.variables[config.multiPlotVariable].indexOf(Number(value));
+            //
+            //    if (valuesValueIndex === -1) {
+            //        let configValueIndex = config.multiPlotVariableValues.indexOf(value);
+            //        config.multiPlotVariableValues.splice(configValueIndex, 1);
+            //    }
+            //}
 
             return config;
         }

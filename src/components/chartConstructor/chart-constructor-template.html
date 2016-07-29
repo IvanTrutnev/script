@@ -1,8 +1,10 @@
 <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="First step" ng-disabled="ctrl.isFirstStepDisabled">
+        <md-tab label="First step">
             <md-content class="md-padding">
-                <p class="md-display-2">Select variable for x axis:</p>
+                <p class="md-display-1">
+                    Select variable for x axis:
+                </p>
                 <md-input-container>
                     <label>X axis</label>
                     <md-select ng-model="ctrl.xAxisVariable">
@@ -10,11 +12,14 @@
                             {{variable}}
                         </md-option>
                     </md-select>
+                </md-input-container>
             </md-content>
         </md-tab>
         <md-tab label="Second step" ng-disabled="ctrl.listOfVariables.length === 1">
             <md-content class="md-padding">
-                <p class="md-display-2">Choose second variable for multi plot(optional)</p>
+                <p class="md-display-1">
+                    Choose second variable for multi plot(optional)
+                </p>
                 <div layout="row">
                     <md-input-container>
                         <label>Select variable</label>
@@ -37,9 +42,11 @@
                 </div>
             </md-content>
         </md-tab>
-        <md-tab label="Last step" ng-disabled="ctrl.isLastStepDisabled">
+        <md-tab label="Last step">
             <md-content class="md-padding">
-                <p class="md-display-2">Last step. Choose values of rest variables</p>
+                <p class="md-display-1">
+                    Last step. Choose values of rest variables
+                </p>
                 <div layout="row">
                     <md-input-container ng-repeat="variable in ctrl.listOfVariables" ng-if="variable !== ctrl.multiPlotVariable && variable !== ctrl.xAxisVariable">
                         <label>{{ variable }} value</label>
@@ -49,10 +56,9 @@
                     </md-input-container>
                 </div>
             </md-content>
-            <div layout="row" layout-align="center center">
-                <md-button>Previous</md-button>
-                <md-button ng-click="ctrl.configureChart()">Finish</md-button>
-            </div>
         </md-tab>
     </md-tabs>
+    <div layout="row" layout-align="center center">
+        <md-button ng-click="ctrl.configureChart()">Finish</md-button>
+    </div>
 </md-content>
