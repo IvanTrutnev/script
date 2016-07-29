@@ -92,6 +92,12 @@
                 ctrl.onChartDone();
                 ctrl.showPanel = false;
             }
+            if ('editMode' in chengesObj) {
+                if (ctrl.editMode === true && ctrl.chartConfig === undefined) {
+                    ctrl.chartConfig = {};
+                    ctrl.showPanel = true;
+                }
+            }
         }
 
 

@@ -29,9 +29,12 @@
                     ctrl.loaded = true;
 
                     ctrl.variablesValues = {};
-                    ctrl.chartConfig = {};
                     Object.assign(ctrl.variablesValues, data.variablesValues);
-                    Object.assign(ctrl.chartConfig, data.chartConfig);
+
+                    if (data.chartConfig) {
+                        ctrl.chartConfig = {};
+                        Object.assign(ctrl.chartConfig, data.chartConfig);
+                    }
 
                     ctrl.sharedFormula = data;
                     ctrl.listOfVariables = [];
