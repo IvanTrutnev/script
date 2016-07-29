@@ -51,7 +51,7 @@
                 .catch(({message}) => {notifyService.notify(message)});
         }
 
-        function onChartDone(config) {
+        function onChartDone(config = null) {
             ctrl.chartConfig = config;
         }
 

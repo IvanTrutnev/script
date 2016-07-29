@@ -89,6 +89,7 @@
             console.info('debug chart panel');
             if ('formula' in chengesObj) {
                 configureChart();
+                ctrl.onChartDone();
                 ctrl.showPanel = false;
             }
         }
