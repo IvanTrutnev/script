@@ -88,8 +88,8 @@
         function onChanges(chengesObj) {
             console.info('debug chart panel');
             if ('formula' in chengesObj) {
-                let currentValue = chengesObj.formula.currentValue,
-                    previousValue = chengesObj.formula.previousValue;
+                configureChart();
+                ctrl.showPanel = false;
             }
         }
 
