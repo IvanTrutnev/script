@@ -57,7 +57,7 @@
             });
         }
 
-        function shareFunction(rawFormula, formulaTex, variablesValues, user, chartConfig = null) {
+        function shareFunction(rawFormula, functionName, formulaTex, variablesValues, user, chartConfig = null) {
             return $q((resolve, reject) => {
                 let sharedFunction = {
                     userId: user.uid,
@@ -69,6 +69,7 @@
                     },
                     dateCreated: math.floor(Date.now()/1000),
                     rawFormula,
+                    functionName,
                     formulaTex,
                     variablesValues,
                     chartConfig

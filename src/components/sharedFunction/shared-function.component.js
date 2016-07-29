@@ -29,9 +29,12 @@
                     ctrl.loaded = true;
 
                     ctrl.variablesValues = {};
-                    ctrl.chartConfig = {};
                     Object.assign(ctrl.variablesValues, data.variablesValues);
-                    Object.assign(ctrl.chartConfig, data.chartConfig);
+
+                    if (data.chartConfig) {
+                        ctrl.chartConfig = {};
+                        Object.assign(ctrl.chartConfig, data.chartConfig);
+                    }
 
                     ctrl.sharedFormula = data;
                     ctrl.listOfVariables = [];
@@ -40,9 +43,10 @@
                         values.sort((a, b) =>  a < b ? -1 : 1);
                         ctrl.listOfVariables.push(key);
                     }
+                    ctrl.functionName = ctrl.sharedFormula.functionName || 'f';
                     ctrl.formula = math.parse(ctrl.sharedFormula.rawFormula).compile();
                     ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variablesValues);
-                    ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
+                    ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionName, ctrl.functionArgs);
                     console.info('debug');
                 })
                 .catch((error) => {

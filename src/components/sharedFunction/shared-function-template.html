@@ -10,8 +10,8 @@
             </md-card-header-text>
         </md-card-header>
 
-        <img ng-if="!ctrl.sharedFormula.imageURL" src="../../images/blank-image.png" class="md-card-image">
-        <chart-panel ng-if="ctrl.sharedFormula.imageURL"
+        <img ng-hide="ctrl.sharedFormula.imageURL || ctrl.editMode" src="../../images/blank-image.png" class="md-card-image">
+        <chart-panel ng-show="ctrl.sharedFormula.imageURL || ctrl.editMode"
                      chart-config="ctrl.chartConfig"
                      list-of-variables="ctrl.listOfVariables"
                      variables="ctrl.variablesValues"
@@ -31,6 +31,7 @@
                              layout="column">
             </variables-input>
             <function-table list-of-variables="ctrl.listOfVariables"
+                            function-name="ctrl.functionName"
                             answers="ctrl.answers"
                             layout="column"
                             layout-padding>

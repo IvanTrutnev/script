@@ -40,11 +40,11 @@
     };
     firebase.initializeApp(config);
 
-    //if ('serviceWorker' in navigator) {
-    //    navigator.serviceWorker.register('service-worker.js')
-    //        .then((reg) => {
-    //                console.info(reg);
-    //        })
-    //        .catch((e) => {console.error('Error during service worker registration', e)});
-    //}
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then((reg) => {
+                    console.info(reg);
+            })
+            .catch((e) => {console.error('Error during service worker registration', e)});
+    }
 })(angular);

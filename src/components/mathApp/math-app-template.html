@@ -1,6 +1,6 @@
 <md-content layout-margin layout-fill md-scroll-y>
     <formula-input raw-formula="ctrl.rawFormula"
-                   on-set-formula="ctrl.onSetFormula(formula, variables, rawFormula, formulaTex)"
+                   on-set-formula="ctrl.onSetFormula(formula, functionName, variables, formulaException, rawFormula, formulaTex)"
                    layout="column"
                    layout-padding
                    class="md-whiteframe-1dp">
@@ -17,6 +17,7 @@
     </variables-input>
 
     <function-table list-of-variables="ctrl.listOfVariables"
+                    function-name="ctrl.functionName"
                     answers="ctrl.answers"
                     ng-hide="ctrl.answers === null"
                     layout="column"

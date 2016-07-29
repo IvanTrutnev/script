@@ -17,9 +17,11 @@
         ctrl.shareFunction = shareFunction;
         ctrl.$onInit = onInit;
 
-        function onSetFormula(formula, listOfVariables, rawFormula, formulaTex) {
+        function onSetFormula(formula, functionName, listOfVariables, formulaException, rawFormula, formulaTex) {
             if(formula !== null && ctrl.rawFormula !== rawFormula) {
+                ctrl.functionName = functionName;
                 ctrl.rawFormula = rawFormula;
+                ctrl.formulaException = formulaException;
                 ctrl.formulaTex = formulaTex;
                 ctrl.formula = formula.compile();
             }
@@ -35,7 +37,7 @@
 
             if (variablesValues !== null) {
                 ctrl.functionArgs = variableService.getFunctionArgs(ctrl.variablesValues);
-                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionArgs);
+                ctrl.answers = formulaService.executeFormulaForTable(ctrl.formula, ctrl.functionName, ctrl.functionArgs);
             }
             else {
                 ctrl.functionArgs = [];
@@ -44,12 +46,12 @@
         }
 
         function shareFunction() {
-            sharedFunctionsService.shareFunction(ctrl.rawFormula, ctrl.formulaTex, ctrl.variablesValues, ctrl.user, ctrl.chartConfig)
+            sharedFunctionsService.shareFunction(ctrl.formulaException, ctrl.functionName, ctrl.formulaTex, ctrl.variablesValues, ctrl.user, ctrl.chartConfig)
                 .then(({message}) => {notifyService.notify(message)})
                 .catch(({message}) => {notifyService.notify(message)});
         }
 
-        function onChartDone(config) {
+        function onChartDone(config = null) {
             ctrl.chartConfig = config;
         }
 
