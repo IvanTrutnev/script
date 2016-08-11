@@ -43,7 +43,7 @@ var config = {
     },
     tunnel: true,
     host: 'localhost',
-    port: 1488,
+    port: 8080,
     logPrefix: "kurulev"
 };
 
